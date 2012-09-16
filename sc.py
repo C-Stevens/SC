@@ -1,13 +1,20 @@
 import subprocess
 import sys
 import time
+
+def timedExit(message='', timeout=None, returnCode=0):
+	if message:
+		print (message)
+	if timeout is None:
+		timeout = conf.waitTime
+	print ('Auto closing in', timeout, 'seconds...')
+	time.sleep(timeout)
+	sys.exit(returnCode)
+
 try:
 	import conf
 except:
-	print ('Config file missing!')
-	print ('Auto closing in 5 seconds...')
-	time.sleep(5)
-	sys.exit(1)
+	timedExit('Config file missing!', 5, 1)
 
 try:
         raw_input
@@ -26,9 +33,7 @@ while True:
 			print ('Transfer complete!')
 		else:
 			print ('Transfer failed')
-		print ('Auto-closing in {0.waitTime} seconds...'.format(conf))
-		time.sleep(conf.waitTime)
-		break
+		timedExit()
 		
 	elif selection in ('grab', 'gr', 'g'):
 		dirName = raw_input('Directory path to file(s): ')
@@ -39,9 +44,7 @@ while True:
 			print ('Grabbing completed!')
 		else:
 			print ('Grab failed.')
-		print ('Auto-closing in {0.waitTime} seconds...'.format(conf))
-		time.sleep(conf.waitTime)
-		break
+		timedExit()
 		
 	else:
 		print ('Invalid entry. Supported responses are Transfer or Grab (case insensitive)')
