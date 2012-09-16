@@ -6,7 +6,7 @@
 ----
 
 SC is a small, lightweight, yet powerful python script to securely transfer and copy files
-between Linux-based machines and strictly Unix environments.
+between Linux-based machines and Windows environments.
 
 The script is designed to be as user friendly as possible by using a config file, so no
 manual editing of sc.py should be necessary, unless you wish to write in your own custom
@@ -33,7 +33,7 @@ reason this file should be modified is if you wish to add your own customization
 ----
 
 All bugs, errors, suggestions, improvements, feedback, etc. are desired! You can reach me via
-email at colinstevens123@gmail.com
+email at colinstevens123 at gmail dot com
 
 You're free to modify/improve this script in any way you wish. If you have, I'd love to see
 what you've done with it, and would appreciate it if you sent me an email about it.

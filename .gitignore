@@ -1,0 +1,4 @@
+conf.py
+*.pyc
+*.pyo
+__pycache__
