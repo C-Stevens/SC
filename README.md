@@ -1,9 +1,9 @@
 #SC.py - Secure Copy.py
 
 *Written by Colin Stevens*
+----
 
 ##Introduction
-----
 
 SC is a small, lightweight, yet powerful python script to securely transfer and copy files
 between Linux-based machines and Windows environments.
@@ -13,7 +13,6 @@ manual editing of sc.py should be necessary, unless you wish to write in your ow
 features.
 
 ##Things to note
-----
 
 * This script requires PSCP to run! it can be obtained [here] (http://the.earth.li/~sgtatham/putty/latest/x86/pscp.exe)
 
@@ -29,7 +28,6 @@ features.
 reason this file should be modified is if you wish to add your own customization to the script.
 
 ##Final Notes
-----
 
 All bugs, errors, suggestions, improvements, feedback, etc. are desired! You can reach me via
 email at colinstevens123 at gmail dot com
