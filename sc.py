@@ -15,9 +15,9 @@ except NameError:
         raw_input = input
 
 while True:
-	selection = raw_input('Transfer or Grab files? ')
+	selection = raw_input('Transfer or Grab files? ').lower()
 	
-	if selection in ['Transfer']:
+	if selection in ('transfer', 'tr', 't'):
 		fileDir = raw_input('Full directory path to file to transfer: ')
 		transferDir = raw_input('Full directory on host to transfer to: ')
 		returncode = subprocess.call([conf.PSCPdir, '-r', fileDir, conf.user + '@' + conf.host + ':' + transferDir])
@@ -30,7 +30,7 @@ while True:
 		time.sleep(conf.waitTime)
 		break
 		
-	elif selection in ['Grab']:
+	elif selection in ('grab', 'gr', 'g'):
 		dirName = raw_input('Directory path to file(s): ')
 		fileName = raw_input('Filename (and extension) to grab: ')
 		returncode = subprocess.call([conf.PSCPdir, '-r', conf.user + 	'@' + conf.host + ':' + dirName + '/' + fileName, conf.downloadDir])
@@ -44,4 +44,4 @@ while True:
 		break
 		
 	else:
-		print ('Invalid entry. Supported responses are Transfer or Grab (case sensitive)')
+		print ('Invalid entry. Supported responses are Transfer or Grab (case insensitive)')
