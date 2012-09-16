@@ -22,6 +22,7 @@ features.
 * Remember to fill out the configuration file for SC, and to rename it as "conf.py" (no quotes).
 * There are notations next to each value to help explain what each value is used for. Additionally, the conf.template.py file comes with arbitrary values in order to give you an idea of the proper syntax that is expected
 * Make sure to NOT wrap your numerical value for the 'waitTime' value in quotes, this will cause it to not function.
+* The slashes in the directory pointing to your PSCP.exe file can sometimes conflict with python. Make sure to use either forward slashes (/) or double back slashes (\\) when pointing the configuration file to the directory of PSCP.exe.
 
 **sc.py:**
 
