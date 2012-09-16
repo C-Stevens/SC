@@ -14,8 +14,7 @@ try:
 except NameError:
         raw_input = input
 
-running = True
-while running:
+while True:
 	selection = raw_input('Transfer or Grab files? ')
 	
 	if selection in ['Transfer']:
@@ -27,8 +26,9 @@ while running:
 			print ('Transfer complete!')
 		else:
 			print ('Transfer failed')
-		print ('Auto-closing in {0.waitTime} seconds...' .format(conf))
-		time.sleep(conf.waitTime)	
+		print ('Auto-closing in {0.waitTime} seconds...'.format(conf))
+		time.sleep(conf.waitTime)
+		break
 		
 	elif selection in ['Grab']:
 		dirName = raw_input('Directory path to file(s): ')
@@ -39,9 +39,9 @@ while running:
 			print ('Grabbing completed!')
 		else:
 			print ('Grab failed.')
-		print ('Auto-closing in {0.waitTime} seconds...' .format(conf))
+		print ('Auto-closing in {0.waitTime} seconds...'.format(conf))
 		time.sleep(conf.waitTime)
+		break
 		
 	else:
 		print ('Invalid entry. Supported responses are Transfer or Grab (case sensitive)')
-running = False
