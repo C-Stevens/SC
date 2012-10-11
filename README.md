@@ -15,13 +15,19 @@ features.
 
 ##Things to note
 
-* This script requires PSCP to run! it can be obtained [here] (http://the.earth.li/~sgtatham/putty/latest/x86/pscp.exe)
+ * This script requires PSCP to run! it can be obtained [here] (http://the.earth.li/~sgtatham/putty/latest/x86/pscp.exe)
 
-**The configuration file (conf.py):**
+####The configuration file (conf.py):
 
-* Remember to fill out the configuration file for SC, and to rename it as "conf.py" (no quotes).
-* There are notations next to each value to help explain what each value is used for. Additionally, the conf.template.py file comes with arbitrary values in order to give you an idea of the proper syntax that is expected
-* Make sure to NOT wrap your numerical value for the 'waitTime' value in quotes, this will cause it to not function.
+ * Remember to fill out the configuration file for SC, and to rename it as "conf.py" (no quotes).
+ * The conf.template.py file comes with arbitrary values in order to give you an idea of the proper syntax that is expected
+ * Make sure to NOT wrap your numerical value for the 'waitTime' value in quotes, this will cause it to not function.
+ * **Variables**
+  * *PSCPdir* - Full directory path to pscp.exe on your machine.
+  * *downloadDir* - Directory path on your machine where you want grabbed files to download to. If left to default value of <code>None </code>, SC.py will prompt you asking you what directory you want grabbed files to download to. Keep this value at <code>None</code> if you want to specify the download directory each time you grab files. An example of a fixed <code>downloadDir</code> value would be: <code>downloadDir=r'D:\Networking\GrabbedFiles\' </code>.
+  * *user* - The user you are logging in as remotely.
+  * *host* - The host that you are connecting to remotely.
+  * *waitTime* - Time (in seconds) that the script will wait before auto-closing upon successful or unsuccessful file transfer or grab. Do not wrap this numerical values in quotes!
 
 **sc.py:**
 
