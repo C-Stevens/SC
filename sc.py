@@ -14,7 +14,7 @@ def timedExit(message='', timeout=None, returnCode=0):
 try:
 	import conf
 except:
-	timedExit('Config file missing!', 5, 1)
+	timedExit('[!] Config file missing!', 5, 1)
 
 try:
         raw_input
@@ -32,19 +32,22 @@ while True:
 		if returncode == 0:
 			print ('Transfer complete!')
 		else:
-			print ('Transfer failed')
+			print ('[!] Transfer failed')
 		timedExit()
 		
 	elif selection in ('grab', 'gr', 'g'):
 		dirName = raw_input('Directory path to file(s): ')
 		fileName = raw_input('Filename (and extension) to grab: ')
-		returncode = subprocess.call([conf.PSCPdir, '-r', conf.user + 	'@' + conf.host + ':' + dirName + '/' + fileName, conf.downloadDir])
+		downDir = conf.downloadDir
+
+		if downDir is None:
+			downDir = raw_input('[!] Download directory not specified in config file.\nFull directory path to download files to: ')
 		
-		if returncode == 0:
-			print ('Grabbing completed!')
+		if subprocess.call([conf.PSCPdir, '-r', conf.user + '@' + conf.host + ':' + dirName + '/' + fileName, downDir]):
+			print ('[!] Grab failed.')
 		else:
-			print ('Grab failed.')
+			print ('Grabbing completed!')
 		timedExit()
 		
 	else:
-		print ('Invalid entry. Supported responses are Transfer or Grab (case insensitive)')
+		print ('[!] Invalid entry. Supported responses are Transfer or Grab (case insensitive)')
