@@ -1,53 +1,89 @@
 import subprocess
 import sys
+import os
 import time
+from timedExit import timedExit
+from buildConf import buildConf
+from version import version
 
-def timedExit(message='', timeout=None, returnCode=0):
-	if message:
-		print (message)
-	if timeout is None:
-		timeout = conf.waitTime
-	print ('Auto closing in', timeout, 'seconds...')
-	time.sleep(timeout)
-	sys.exit(returnCode)
-
+#Compatibility for older versions of python
 try:
-	import conf
-except:
-	timedExit('[!] Config file missing!', 5, 1)
-
+	import configparser as ConfigParser
+except ImportError:
+	import ConfigParser
+config = ConfigParser.ConfigParser()
 try:
-        raw_input
+	raw_input
 except NameError:
-        raw_input = input
+	raw_input = input
+
+print('Secure Copy - version ' + version + '\n')
+
+#Check for config, build if necessary
+config.read('conf.cfg')
+if not config.has_section('Directories'):
+	print ('[!] Config file malformed or missing.')
+	while True:
+		buildSelection = raw_input(' Would you like to run buildConf now to create a new config? ').lower()
+		if buildSelection in ('yes', 'y'):
+			print(' running buildConf.py...')
+			buildConf()
+			config.read('conf.cfg')
+			from timedExit import timedExit
+			break
+		elif buildSelection in ('no', 'n'):
+			timedExit('[!] Config file failed to load! Verify state and integrity of the file!', 7, 1)
+		else:
+			print(' Unsupported response. Supported responses are: yes, y, no, n [case insensitive]')
+else:
+	print ('Config loaded successfully!')
+
+#redefine all config variables for easier calling
+PSCP = 'PSCP.exe'
+downloadDir = config.get('Directories', 'downloaddir')
+fileDir = config.get('Directories', 'fileDir')
+user =  config.get('Login', 'user')
+host =  config.get('Login', 'host')
 
 while True:
 	selection = raw_input('Transfer or Grab files? ').lower()
 	
 	if selection in ('transfer', 'tr', 't'):
-		fileDir = raw_input('Full directory path to file to transfer: ')
-		transferDir = raw_input('Full directory on host to transfer to: ')
-		returncode = subprocess.call([conf.PSCPdir, '-r', fileDir, conf.user + '@' + conf.host + ':' + transferDir])
-		
-		if returncode == 0:
-			print ('Transfer complete!')
-		else:
-			print ('[!] Transfer failed')
-		timedExit()
+		if fileDir == 'None':
+			fileDir = raw_input('[!] Static transfer directory not specified in config file.\n Full directory path to transfer files from: ')
+		elif not fileDir.endswith(os.sep):
+			fileDir += os.sep
+
+		while True:
+			transFile = raw_input('File you want to transfer [wildcards accepted]: ')
+			transferDir = raw_input('Full directory on host to transfer to: ')
+					
+			if subprocess.call([PSCP, '-r', fileDir+transFile, user + '@' + host + ':' + transferDir]):
+				print ('[!] Transfer failed')
+			else:
+				print ('Transfer complete!')
+			transferAgain = raw_input('Would you like to start another transfer? ').lower()
+			if transferAgain in ('no', 'n'):
+				timedExit()
 		
 	elif selection in ('grab', 'gr', 'g'):
-		dirName = raw_input('Directory path to file(s): ')
-		fileName = raw_input('Filename (and extension) to grab: ')
-		downDir = conf.downloadDir
+		#Various checks to download directory to ensure script can continue
+		if downloadDir == 'None':
+			downloadDir = raw_input('[!] Download directory not specified in config file.\n Full directory path to download files to: ')
+		elif not downloadDir.endswith(os.sep):
+			downloadDir += os.sep
 
-		if downDir is None:
-			downDir = raw_input('[!] Download directory not specified in config file.\nFull directory path to download files to: ')
-		
-		if subprocess.call([conf.PSCPdir, '-r', conf.user + '@' + conf.host + ':' + dirName + '/' + fileName, downDir]):
-			print ('[!] Grab failed.')
-		else:
-			print ('Grabbing completed!')
-		timedExit()
+		while True:
+			dirName = raw_input('Directory path to file(s): ')
+			fileName = raw_input('File with extension to grab [wildcards accepted]: ')
+
+			if subprocess.call([PSCP, '-r', user + '@' + host + ':' + dirName + fileName, downloadDir]):
+				print ('[!] Grab failed.')
+			else:
+				print ('Grabbing completed!')
+			grabAgain = raw_input('Would you like to start another grab? ').lower()
+			if grabAgain in ('no', 'n'):
+				timedExit()
 		
 	else:
 		print ('[!] Invalid entry. Supported responses are Transfer or Grab (case insensitive)')
